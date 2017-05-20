@@ -1,0 +1,25 @@
+{
+  "name": "citation-js-form",
+  "version": "0.2.0",
+  "description": "HTML Form to use with Citation.js",
+  "main": "js/jquery.citation-0.2.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/larsgw/citation.js-form.git"
+  },
+  "author": "Lars Willighagen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/larsgw/citation.js-form/issues"
+  },
+  "homepage": "https://github.com/larsgw/citation.js-form#readme",
+  "devDependencies": {
+    "jsdoc": "^3.4.3"
+  }
+}
