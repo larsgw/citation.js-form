@@ -1,13 +1,14 @@
 {
   "name": "citation-js-form",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "HTML Form to use with Citation.js",
   "main": "js/jquery.citation-0.2.js",
   "directories": {
-    "doc": "docs"
+    "doc": "docs/api",
+    "lib": "js/"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build-docs": "jsdoc ./js README.md -c docs/conf.json"
   },
   "repository": {
     "type": "git",

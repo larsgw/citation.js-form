@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Home - Docs - Citation.js</title>
+    
+    <meta name="theme-color" content="#FFC107">
+    <link rel="shortcut icon" type="image/png" href="../favicon.png"/>
+    <link rel="icon" type="image/png" href="../favicon.png"/>
+    
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="../static/css/api.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Home</h1>
+
+    
+
+
+
+    
+
+
+    <h3> </h3>
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    <section>
+        <article><h1>Citation.js Form</h1><h5>Table of Contents</h5><ul>
+<li><a href="#use">Use</a><ul>
+<li><a href="#cite">jQueryCite</a><ul>
+<li><a href="#cite.form">HTML templates</a><ul>
+<li><a href="#cite.form.in">Input form</a><ul>
+<li><a href="#cite.form.in.fields">Input form fields</a></li>
+</ul>
+</li>
+<li><a href="#cite.form.out">Output form</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#dependencies">Dependencies</a></li>
+<li><a href="#demo">Demo</a></li>
+</ul>
+<p>This plugin builds a form for input for the <code>Cite</code> object.</p>
+<h1><a id="use" href="#use">Use</a></h1><p>After including the necessary files like below,
+you can make a new <code>jQueryCite</code> object.</p>
+<pre class="prettyprint source lang-html"><code>&lt;script type=&quot;text/javascript&quot; src=&quot;path/to/jquery.js&quot;>&lt;/script>
+&lt;script type=&quot;text/javascript&quot; src=&quot;path/to/citeproc.js&quot;>&lt;/script>
+&lt;script type=&quot;text/javascript&quot; src=&quot;path/to/citation-0.2.js&quot;>&lt;/script>
+&lt;script type=&quot;text/javascript&quot; src=&quot;path/to/jquery.citation-0.2.js&quot;>&lt;/script></code></pre><h2><a id="cite" href="#cite">jQueryCite</a></h2><p>Make a new <code>jQueryCite</code> object like this:</p>
+<pre class="prettyprint source lang-js"><code>var example = new jQueryCite( &lt;options> )</code></pre><p>The options are:</p>
+<ol>
+<li><code>defaultOptions</code>: <a href="#citation.cite">Options</a> to be passed to <code>Cite</code></li>
+<li><code>saveInCookies</code>: Save data in cookies when <code>.save()</code>d</li>
+<li><code>add</code>: Callback to execute when data is submitted to collection</li>
+<li><code>inputForm</code> and <code>outputForm</code>: HTML template (see <a href="#jquery.form">docs</a>)</li>
+</ol>
+<h2><a name="form"><a id="cite.form" href="#cite.form">HTML templates</a></a></h2><p>Of course, you can include all sorts of things in the templates, but the following things are going to get used. Templates below are in <a href="https://github.com/pugjs/pug">Jade/Pug</a>. Elements may be wrapped in containers, but the general hierarchy should be like this</p>
+<h3><span name="form.in"><a id="cite.form.in" href="#cite.form.in">Input form</a></span></h3><pre class="prettyprint source"><code>.cjs-in
+  .cjs-piece.cjs-input
+    // List of fieldsets, see below
+  .cjs-piece.cjs-import
+    .cjs-import-name // Text input to hold input value names
+    .cjs-import-file // File input
+  .cjs-piece.cjs-preview
+    .cjs-draft // Element holding draft
+    .cjs-add // Submit (and clear) draft
+    .cjs-delete // Clear draft</code></pre><h4><a name="form.in.fields"><a id="cite.form.in.fields" href="#cite.form.in.fields">Input form fields</a></a></h4><p>Form fields consist of a <code>fieldset</code> element and inside an <code>input</code> element, with the following attributes:</p>
+<ul>
+<li><code>fieldset</code><ul>
+<li><code>data-cjs-field-type</code>: For what publication types should this field be visible (omit when it should always be visible)</li>
+<li><code>data-cjs-field-state</code>: <code>&quot;hidden&quot;</code>, omitted or <code>&quot;visible&quot;</code>. Assigned by program</li>
+</ul>
+</li>
+<li><code>input</code><ul>
+<li><code>data-cjs-field</code>: Name of the corresponding CSL property. When CSL properties are complex, <code>jQueryCite</code> usually helps out</li>
+<li><code>type</code>: Usually <code>&quot;text&quot;</code>, but depends on CSL property. If it gives input to jQuery in the correct format, it's okay</li>
+</ul>
+</li>
+</ul>
+<p>Exceptions:</p>
+<ul>
+<li>The field or the <code>page</code> property should have two <code>input</code>s</li>
+<li>Fields <code>author</code>, <code>container-author</code>, <code>editor</code> and <code>publisher-title</code> get <code>.CJSMultipleInput()</code>, so multiple <code>input</code>s aren't necessary, as they're added dynamically</li>
+<li>One of the fields, preferably the first one, should be a <code>select</code> (<code>data-cjs-field=&quot;type&quot;</code>), containing publication type options</li>
+</ul>
+<h3><a name="form.out"><a id="cite.form.out" href="#cite.form.out">Output form</a></a></h3><pre class="prettyprint source"><code>.cjs-out
+  .cjs-piece.cjs-settings
+    .cjs-opt
+      fieldset
+        select.cjs-type // HTML text or plain text
+          option(value=&quot;html&quot;)
+          option(value=&quot;string&quot;)
+      fieldset
+        select.cjs-style // Formatting style
+          option(value=&quot;citation.apa&quot;)
+          option(value=&quot;citation.vancouver&quot;)
+          option(value=&quot;citation.harvard1&quot;)
+          // Formatted citations can be expanded, if correct material is provided to Cite
+          option(value=&quot;bibtex&quot;)
+          option(value=&quot;csl&quot;)
+      fieldset
+        select.cjs-lan // Output language
+          option(value=&quot;en-US&quot;)
+          option(value=&quot;es-ES&quot;)
+          option(value=&quot;du-DU&quot;)
+          option(value=&quot;fr-FR&quot;)
+          option(value=&quot;nl-NL&quot;)
+          // Langs can be expanded, if correct material is provided to Cite
+  .cjs-piece
+    .cjs-output // Holds data
+  .cjs-piece.cjs-export
+    .cjs-export-copy // Copy data on click
+    .cjs-export-save // Download data on click</code></pre><h1><a id="dependencies" href="#dependencies">Dependencies</a></h1><ul>
+<li><a href="https://jquery.org">jQuery</a></li>
+<li><a href="https://larsgw.github.io/citation.js">Citation.js</a></li>
+</ul>
+<h1><a id="demo" href="demo">Demo</a></h1><ul>
+<li><a href="https://larsgw.github.io/citation.js-form/demo/">Demo</a></li>
+</ul></article>
+    </section>
+
+
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>jquery.citation.js</h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>jquery.Citation-0.2.js</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+    <dt class="tag-version">Version:</dt>
+    <dd class="tag-version"><ul class="dummy"><li>0.2</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Lars Willighagen</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+    <dt class="tag-license">License:</dt>
+    <dd class="tag-license"><ul class="dummy"><li>Copyright (c) 2015-2016 Lars Willighagen
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.</li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jquery.citation.js.html">jquery.citation.js</a>, <a href="jquery.citation.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="jQuery.html">jQuery</a></li><li><a href="jQueryCite.html">jQueryCite</a></li></ul><h3><a href="global.html">Global</a></h3>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Sat May 20 2017 16:00:45 GMT+0200 (CEST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
